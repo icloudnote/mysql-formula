@@ -1,4 +1,5 @@
 {%- from tpldir ~ "/map.jinja" import mysql with context %}
+{%- from tpldir ~ "/supported_sections.yaml" import supported_sections with context -%}
 {%- set os_family = salt['grains.get']('os_family', None) %}
 
 {%- if "config_directory" in mysql %}
@@ -86,6 +87,7 @@ mysql_config:
   file.managed:
     - name: {{ mysql.config.file }}
     - template: jinja
+    - makedirs: True
 {%- if "config_directory" in mysql %}
     - source: salt://{{ tpldir }}/files/my-include.cnf
 {%- else %}
@@ -93,6 +95,8 @@ mysql_config:
 {%- endif %}
     - context:
         tpldir: {{ tpldir }}
+        mysql: {{ mysql }}
+        supported_sections: {{ supported_sections }}
     {%- if os_family in ['Debian', 'Gentoo', 'RedHat'] %}
     - user: root
     - group: root

@@ -175,7 +175,7 @@ mysql_initialize:
       - pkg: {{ mysql.serverpkg }}
 {%- endif %}
 
-{%- if os_family in ['RedHat', 'Suse'] and mysql.serverpkg.lower() == 'mariadb-server' %}
+{%- if os_family in ['RedHat', 'Suse'] %}
 # For MariaDB it's enough to only create the datadir
 mysql_initialize:
   file.directory:
